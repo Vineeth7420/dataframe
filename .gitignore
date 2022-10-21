@@ -135,3 +135,5 @@ dmypy.json
 .secrets
 *.pem
 *.ppk
+secrets
+spak.pem
