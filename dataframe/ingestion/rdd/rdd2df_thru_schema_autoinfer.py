@@ -1,4 +1,4 @@
-from pyspark.sql import SparkSession,Row
+from pyspark.sql import SparkSession, Row
 import os.path
 import yaml
 
