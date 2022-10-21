@@ -35,10 +35,17 @@ if __name__ == '__main__':
     demographic_rdd.foreach(print)
     finances_rdd.foreach(print)
 
+    demographics_pair_rdd = demographic_rdd \
+        .map(lambda l: l.split(',')) \
+        .map(lambda lst: (int(lst[0]), (int(lst[1]), strtobool(lst[2]), str(lst[3]), str(lst[4]), strtobool(lst[5]), strtobool(lst[6]), int(lst[7]))))
+
+    finances_pair_rdd = finances_rdd \
+        .map(lambda l: l.split(',')) \
+        .map(lambda lst: (int(lst[0]), (strtobool(lst[1]), strtobool(lst[2]), strtobool(lst[3]), int(lst[4]))))
 
 
-
-
+    demographics_pair_rdd.foreach(print)
+    finances_pair_rdd.foreach(print)
 
 
 
