@@ -12,6 +12,7 @@ if __name__ == '__main__':
     spark = SparkSession \
         .builder \
         .appName('Rdd') \
+        .master('local[*]') \
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     conf = open(app_config_path)
     app_conf = yaml.load(conf, Loader=yaml.FullLoader)
     secret = open(app_secrets_path)
-    app_secret = yaml.load(secret, Loader = yaml.FullLoader)
+    app_secret = yaml.load(secret, Loader=yaml.FullLoader)
 
     hadoop_conf = spark.sparkContext._jsc.hadoopConfiguration()
     hadoop_conf.set('f3.s3a.access.key', app_secret['s3_conf']['access_key'])
@@ -31,8 +32,8 @@ if __name__ == '__main__':
     demographic_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/demographic.csv')
     finances_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances.csv')
 
-    demographic_rdd.take(5)
-    finances_rdd.take(5)
+    demographic_rdd.foreach(print)
+    finances_rdd.foreach(print)
 
 
 
