@@ -47,10 +47,12 @@ if __name__ == '__main__':
     demographics_pair_rdd.foreach(print)
     finances_pair_rdd.foreach(print)
 
+    # apply join and filter out students from switzerland and financial depe true
 
+    join_pair_rdd = demographics_pair_rdd \
+        .join(finances_pair_rdd)
 
-
-
+    join_pair_rdd.foreach(print)
 
 
 
