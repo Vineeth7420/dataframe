@@ -28,8 +28,8 @@ if __name__ == '__main__':
     hadoop_conf.set('f3.s3a.access.key', app_secret['s3_conf']['access_key'])
     hadoop_conf.set('f3.s3a.secret.key', app_secret['s3_conf']['secret_access_key'])
 
-    demographic_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + 'demographic.csv')
-    finances_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + 'finances.csv')
+    demographic_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/demographic.csv')
+    finances_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances.csv')
 
     demographic_rdd.take(5)
     finances_rdd.take(5)
