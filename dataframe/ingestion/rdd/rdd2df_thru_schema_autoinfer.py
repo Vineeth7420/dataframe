@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession, Row
 import os
 import yaml
 
-if __name__ = '__main__':
+if __name__ == '__main__':
 
     spark = SparkSession \
         .builder \
