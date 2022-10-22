@@ -47,6 +47,9 @@ if __name__ == '__main__':
 
     join_pair_rdd.foreach(print)
 
+    courses_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/course.csv')
+    courses_rdd.foreach(print)
+
 
 
 
