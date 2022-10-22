@@ -28,7 +28,7 @@ if __name__ == '__main__':
     txn_fact_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/txn_fct.csv') \
         .filter(lambda l: l.find('txn_id')) \
         .map(lambda lst: lst.split('|')) \
-        .map(lambda lst: (int(lst[0]), lst[1], float(lst[2], lst[3], lst[4], lst[5], lst[6] )))
+        .map(lambda lst: (int(lst[0]), lst[1], float(lst[2]), lst[3], lst[4], lst[5], lst[6]))
 
     for rec in txn_fact_rdd.take(5):
         print(rec)
