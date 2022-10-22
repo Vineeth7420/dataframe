@@ -50,7 +50,14 @@ if __name__ == '__main__':
     courses_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/course.csv')
     courses_rdd.foreach(print)
 
+    courses_pair_rdd = courses_rdd \
+        .map(lambda l: l.split(',')) \
+        .map(lambda lst: (int(lst[0]), lst[1]))
 
+    join_pair_rdd = join_pair_rdd \
+        .map(lambda rec: (rec[1][0][6], rec[0], rec[1][0], rec[1][1])) \
+        .join(courses_pair_rdd) \
+        .foreach(print)
 
 
 
