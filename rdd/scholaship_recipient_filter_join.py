@@ -45,7 +45,7 @@ if __name__ == '__main__':
     join_pair_rdd = demographics_pair_rdd \
         .join(finances_pair_rdd)
 
-    join_pair_rdd.foreach(print)
+   
 
     courses_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/course.csv')
     courses_rdd.foreach(print)
@@ -55,9 +55,10 @@ if __name__ == '__main__':
         .map(lambda lst: (int(lst[0]), lst[1]))
 
     join_pair_rdd = join_pair_rdd \
-        .map(lambda rec: (rec[1][0][6], rec[0], rec[1][0], rec[1][1])) \
-        .join(courses_pair_rdd) \
-        .foreach(print)
+        .map(lambda rec: (rec[1][0][6], (rec[0], rec[1][0], rec[1][1]))) \
+        .join(courses_pair_rdd)
+
+    join_pair_rdd.foreach(print)
 
 
 
