@@ -58,11 +58,11 @@ if __name__ == '__main__':
 
     txnAggDf = txn_fct_df \
         .repartition(10, txn_fct_df['merchant_id']) \
-        .groupBy(txn_fct_df['merchant_id']) \
+        .groupBy('merchant_id') \
         .agg(sum('amount'), approx_count_distinct('status'))
 
     txnAggDf.show(5, False)
-    
+
 
 
 
