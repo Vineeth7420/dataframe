@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, IntegerType, BooleanType,DoubleType
+from pyspark.sql.types import StructType, IntegerType, BooleanType, DoubleType
 import os.path
 import yaml
 
@@ -10,7 +10,7 @@ if __name__ == '__main__':
         .appName("Read Files") \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.4') \
         .getOrCreate()
-        # .master('local[*]') \
+    # .master('local[*]') \
     spark.sparkContext.setLogLevel('ERROR')
 
     current_dir = os.path.abspath(os.path.dirname(__file__))
@@ -64,12 +64,11 @@ if __name__ == '__main__':
         .write \
         .partitionBy('id') \
         .mode('overwrite') \
-        .option('delimiter','|') \
         .option('header', 'true') \
+        .option('delimiter', '|') \
         .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/fin')
 
     spark.stop()
-
 
     # fin_schema = StructType() \
     #     .add("id", IntegerType(), True) \
