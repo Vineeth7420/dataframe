@@ -47,6 +47,25 @@ if __name__ == '__main__':
     txn_fct_df.printSchema()
     txn_fct_df.show(5, False)
 
+    txn_fct_df = txn_fct_df \
+        .withColumn('created_time_ist', unix_timestamp(txn_fct_df['created_time_ist'], 'yyyy-mm-dd HH:mm:ss').cast(TimestampType()))
+
+    txn_fct_df.printSchema()
+    txn_fct_df.show(5, False)
+
+    print('# of records = ' + str(txn_fct_df.count()))
+    print('# of merchants = ' + str(txn_fct_df.select(txn_fct_df['merchant_id']).distinct().count()))
+
+    txnAggDf = txn_fct_df \
+        .repartition(10, txn_fct_df['merchant_id']) \
+        .groupBy(txn_fct_df['merchant_id']) \
+        .agg(sum('amount'), approx_count_distinct('status'))
+
+    txnAggDf.show(5, False)
+    
+
+
+
 
 
 
