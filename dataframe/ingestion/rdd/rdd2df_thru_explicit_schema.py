@@ -54,7 +54,7 @@ if __name__ == '__main__':
     txn_fct_df.show(5, False)
 
     print('# of records = ' + str(txn_fct_df.count()))
-    print('# of merchants = ' + str(txn_fct_df.select(txn_fct_df['merchant_id']).distinct().count()))
+    print('# of merchants = ' + str(txn_fct_df.select(txn_fct_df["merchant_id"]).distinct().count()))
 
     txnAggDf = txn_fct_df \
         .repartition(10, txn_fct_df['merchant_id']) \
