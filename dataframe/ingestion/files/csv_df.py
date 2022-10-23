@@ -30,45 +30,76 @@ if __name__ == '__main__':
     print("\nCreating dataframe ingestion CSV file using 'SparkSession.read.format()'")
 
     fin_schema = StructType() \
-        .add("id", IntegerType(), True) \
-        .add("has_debt", BooleanType(), True) \
-        .add("has_financial_dependents", BooleanType(), True) \
-        .add("has_student_loans", BooleanType(), True) \
-        .add("income", DoubleType(), True)
+        .add('id', IntegerType(), True) \
+        .add('has_debt', BooleanType(), True) \
+        .add('has_financial_dependents', BooleanType(), True) \
+        .add('has_student_loans', BooleanType(), True) \
+        .add('income', DoubleType(), True)
 
     fin_df = spark.read \
-        .option("header", "false") \
-        .option("delimiter", ",") \
-        .format("csv") \
+        .option('header', 'false') \
+        .option('delimiter', ',') \
+        .format('csv') \
         .schema(fin_schema) \
-        .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv")
+        .load('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances.csv')
 
-    fin_df.printSchema()
     fin_df.show()
-
-    print("Creating dataframe ingestion CSV file using 'SparkSession.read.csv()',")
+    fin_df.printSchema()
 
     finance_df = spark.read \
-        .option("mode", "DROPMALFORMED") \
-        .option("header", "false") \
-        .option("delimiter", ",") \
-        .option("inferSchema", "true") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv") \
+        .option('header', 'false') \
+        .option('mode', 'DROPMALFORMED') \
+        .option('delimiter', ',') \
+        .option('inferSchema', 'true') \
+        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances.csv') \
         .toDF("id", "has_debt", "has_financial_dependents", "has_student_loans", "income")
 
-    print("Number of partitions = " + str(fin_df.rdd.getNumPartitions()))
-    finance_df.printSchema()
+    print('# no of partitions are/is ' + str(fin_df.rdd.getNumPartitions()))
+
     finance_df.show()
+    finance_df.printSchema()
 
-    finance_df \
-        .repartition(2) \
-        .write \
-        .partitionBy("id") \
-        .mode("overwrite") \
-        .option("header", "true") \
-        .option("delimiter", "~") \
-        .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
 
-    spark.stop()
+    # fin_schema = StructType() \
+    #     .add("id", IntegerType(), True) \
+    #     .add("has_debt", BooleanType(), True) \
+    #     .add("has_financial_dependents", BooleanType(), True) \
+    #     .add("has_student_loans", BooleanType(), True) \
+    #     .add("income", DoubleType(), True)
+    #
+    # fin_df = spark.read \
+    #     .option("header", "false") \
+    #     .option("delimiter", ",") \
+    #     .format("csv") \
+    #     .schema(fin_schema) \
+    #     .load("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv")
+    #
+    # fin_df.printSchema()
+    # fin_df.show()
+    #
+    # print("Creating dataframe ingestion CSV file using 'SparkSession.read.csv()',")
+    #
+    # finance_df = spark.read \
+    #     .option("mode", "DROPMALFORMED") \
+    #     .option("header", "false") \
+    #     .option("delimiter", ",") \
+    #     .option("inferSchema", "true") \
+    #     .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/finances.csv") \
+    #     .toDF("id", "has_debt", "has_financial_dependents", "has_student_loans", "income")
+    #
+    # print("Number of partitions = " + str(fin_df.rdd.getNumPartitions()))
+    # finance_df.printSchema()
+    # finance_df.show()
+    #
+    # finance_df \
+    #     .repartition(2) \
+    #     .write \
+    #     .partitionBy("id") \
+    #     .mode("overwrite") \
+    #     .option("header", "true") \
+    #     .option("delimiter", "~") \
+    #     .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/fin")
+
+    # spark.stop()
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" dataframe/ingestion/files/csv_df.py
