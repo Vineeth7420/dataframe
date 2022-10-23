@@ -59,6 +59,17 @@ if __name__ == '__main__':
     finance_df.show()
     finance_df.printSchema()
 
+    finance_df \
+        .repartition(2) \
+        .write \
+        .partitionBy('id') \
+        .mode('overwrite') \
+        .option('delimiter','|') \
+        .option('header', 'true') \
+        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/fin')
+
+    spark.stop()
+
 
     # fin_schema = StructType() \
     #     .add("id", IntegerType(), True) \
