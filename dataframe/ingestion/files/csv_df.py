@@ -27,6 +27,8 @@ if __name__ == '__main__':
     hadoop_conf.set("fs.s3a.access.key", app_secret["s3_conf"]["access_key"])
     hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
+    spark.sparkContext.hadoopConfiguration.set("fs.s3a.multiobjectdelete.enable", "false")
+
     print("\nCreating dataframe ingestion CSV file using 'SparkSession.read.format()'")
 
     fin_schema = StructType() \
