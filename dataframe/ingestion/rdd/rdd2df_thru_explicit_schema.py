@@ -63,7 +63,11 @@ if __name__ == '__main__':
 
     txnAggDf.show(5, False)
 
+    txnAggDf = txnAggDf \
+        .withColumnRenamed('sum(amount)', 'total_amount') \
+        .withColumnRenamed('approx_count_distinct(status)', 'dist_status_count')
 
+    txnAggDf.show(5, False)
 
 
 
