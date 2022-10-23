@@ -31,7 +31,7 @@ if __name__ == '__main__':
     txn_fct_rdd = spark.sparkContext.textFile('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/txn_fct.csv') \
         .filter(lambda rec: rec.find('txn_id')) \
         .map(lambda rec: rec.split('|')) \
-        .map(lambda rec: Row(int(rec[0]), int(rec[1]), float(rec[2]), int(rec[3]), int(rec[4]), int(rec[4]), rec[6]))
+        .map(lambda rec: Row(int(rec[0]), int(rec[1]), float(rec[2]), int(rec[3]), int(rec[4]), int(rec[5]), rec[6]))
 
     txn_fct_schema = StructType([
         StructField('txn_id', LongType(), False),
