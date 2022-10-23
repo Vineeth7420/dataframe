@@ -66,7 +66,7 @@ if __name__ == '__main__':
         .mode('overwrite') \
         .option('header', 'true') \
         .option('delimiter', '|') \
-        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/fin1')
+        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances/data')
 
     spark.stop()
 
