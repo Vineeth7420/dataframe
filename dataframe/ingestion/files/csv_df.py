@@ -27,7 +27,7 @@ if __name__ == '__main__':
     hadoop_conf.set("fs.s3a.access.key", app_secret["s3_conf"]["access_key"])
     hadoop_conf.set("fs.s3a.secret.key", app_secret["s3_conf"]["secret_access_key"])
 
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.multiobjectdelete.enable", "false")
+    spark.sparkContext._jsc.hadoopConfiguration.set("fs.s3a.multiobjectdelete.enable", "false")
 
     print("\nCreating dataframe ingestion CSV file using 'SparkSession.read.format()'")
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         .mode('overwrite') \
         .option('header', 'true') \
         .option('delimiter', '|') \
-        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances/data')
+        .csv('s3a://' + app_conf['s3_conf']['s3_bucket'] + '/finances3/data')
 
     spark.stop()
 
